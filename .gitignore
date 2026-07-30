@@ -1,0 +1,28 @@
+# Build outputs
+bin/*
+obj/
+
+# Keep Release DLLs under source control.
+!bin/Release/
+bin/Release/*
+!bin/Release/net7.0-windows/
+bin/Release/net7.0-windows/*
+!bin/Release/net7.0-windows/vAltGrShortcutFilter.dll
+!bin/Release/net10.0-windows/
+bin/Release/net10.0-windows/*
+!bin/Release/net10.0-windows/vAltGrShortcutFilter.dll
+
+# User and runtime files
+.vs/
+*.user
+*.suo
+*.log
+
+# Build backups
+backups/
+*.bak
+*.tmp
+
+# OS files
+Thumbs.db
+Desktop.ini

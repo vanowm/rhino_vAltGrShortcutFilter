@@ -1,0 +1,42 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "[0-9]*"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - name: Check out tagged files
+        uses: actions/checkout@v4
+
+      - name: Create release and upload plug-in files
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          ASSEMBLY_NAME: vAltGrShortcutFilter
+        run: |
+          $runtimes = @('net7.0-windows', 'net10.0-windows')
+          $assets = @()
+
+          foreach ($runtime in $runtimes) {
+            $source = Join-Path $PWD "bin/Release/$runtime/$env:ASSEMBLY_NAME.dll"
+            if (-not (Test-Path -LiteralPath $source -PathType Leaf)) {
+              throw "Could not find the $runtime DLL in the tagged repository."
+            }
+
+            $asset = Join-Path $env:RUNNER_TEMP "$env:ASSEMBLY_NAME-$runtime.dll"
+            Copy-Item -LiteralPath $source -Destination $asset -Force
+            $assets += $asset
+          }
+
+          & gh release create $env:RELEASE_TAG @assets --verify-tag --title "$env:ASSEMBLY_NAME $env:RELEASE_TAG" --generate-notes
+          if ($LASTEXITCODE -ne 0) {
+            throw "GitHub release publishing failed for $env:RELEASE_TAG."
+          }
