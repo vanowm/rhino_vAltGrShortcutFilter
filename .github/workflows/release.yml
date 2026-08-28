@@ -15,7 +15,7 @@ jobs:
       - name: Check out tagged files
         uses: actions/checkout@v4
 
-      - name: Create release and upload plug-in files
+      - name: Create or update release and upload plug-in files
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -36,7 +36,15 @@ jobs:
             $assets += $asset
           }
 
-          & gh release create $env:RELEASE_TAG @assets --verify-tag --title "$env:ASSEMBLY_NAME $env:RELEASE_TAG" --generate-notes
+          & gh release view $env:RELEASE_TAG *> $null
+          $releaseExists = $LASTEXITCODE -eq 0
+
+          if ($releaseExists) {
+            & gh release upload $env:RELEASE_TAG @assets --clobber
+          } else {
+            & gh release create $env:RELEASE_TAG @assets --verify-tag --title "$env:ASSEMBLY_NAME $env:RELEASE_TAG" --generate-notes
+          }
+
           if ($LASTEXITCODE -ne 0) {
             throw "GitHub release publishing failed for $env:RELEASE_TAG."
           }
