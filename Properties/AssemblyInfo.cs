@@ -9,7 +9,7 @@ using Rhino.PlugIns;
 [assembly: AssemblyProduct("vAltGr Shortcut Filter")]
 [assembly: ComVisible(false)]
 [assembly: SupportedOSPlatform("windows7.0")]
-[assembly: Guid("7ecd24c5-ca60-406e-bb08-8ac162b54de9")]
+[assembly: Guid(vAltGrShortcutFilter.PluginBuildIdentity.Id)]
 
 [assembly: PlugInDescription(DescriptionType.Organization, "V@no")]
 [assembly: PlugInDescription(DescriptionType.UpdateUrl, "https://github.com/vanowm/rhino_vAltGrShortcutFilter")]

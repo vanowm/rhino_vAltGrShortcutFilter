@@ -3,14 +3,6 @@ bin/*
 obj/
 
 # Keep Release DLLs under source control.
-!bin/Release/
-bin/Release/*
-!bin/Release/net7.0-windows/
-bin/Release/net7.0-windows/*
-!bin/Release/net7.0-windows/vAltGrShortcutFilter.dll
-!bin/Release/net10.0-windows/
-bin/Release/net10.0-windows/*
-!bin/Release/net10.0-windows/vAltGrShortcutFilter.dll
 
 # User and runtime files
 .vs/
@@ -26,3 +18,25 @@ backups/
 # OS files
 Thumbs.db
 Desktop.ini
+
+deploy/
+
+# Coordinated host/runtime release artifacts
+!bin/Release/
+bin/Release/*
+!bin/Release/Rhino8/
+bin/Release/Rhino8/*
+!bin/Release/Rhino8/net7.0-windows/
+bin/Release/Rhino8/net7.0-windows/*
+!bin/Release/Rhino8/net7.0-windows/vAltGrShortcutFilter.Rhino8.dll
+!bin/Release/Rhino8/net10.0-windows/
+bin/Release/Rhino8/net10.0-windows/*
+!bin/Release/Rhino8/net10.0-windows/vAltGrShortcutFilter.Rhino8.dll
+!bin/Release/Rhino9/
+bin/Release/Rhino9/*
+!bin/Release/Rhino9/net10.0-windows/
+bin/Release/Rhino9/net10.0-windows/*
+!bin/Release/Rhino9/net10.0-windows/vAltGrShortcutFilter.Rhino9.dll
+
+# Generated C# Dev Kit project cache
+*.lscache

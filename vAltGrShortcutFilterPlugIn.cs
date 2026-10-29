@@ -5,19 +5,9 @@ using Rhino.PlugIns;
 
 namespace vAltGrShortcutFilter;
 
-[Guid("7ecd24c5-ca60-406e-bb08-8ac162b54de9")]
+[Guid(PluginBuildIdentity.Id)]
 public sealed class vAltGrShortcutFilterPlugIn : PlugIn
 {
-#if NET7_0
-  private const int TargetRhinoVersion = 8;
-  private const string TargetFramework = "net7.0-windows";
-#elif NET10_0
-  private const int TargetRhinoVersion = 9;
-  private const string TargetFramework = "net10.0-windows";
-#else
-#error Unsupported target framework.
-#endif
-
   public override PlugInLoadTime LoadTime => PlugInLoadTime.AtStartup;
 
   protected override string LocalPlugInName => "vAltGr Shortcut Filter";
@@ -30,11 +20,11 @@ public sealed class vAltGrShortcutFilterPlugIn : PlugIn
       ?? "unknown";
 
     Log.Initialize();
-    Log.Write($"startup  rhino={RhinoApp.Version}  version={version}  target=rhino{TargetRhinoVersion}/{TargetFramework}  dll={assembly.Location}");
-    if (RhinoApp.ExeVersion != TargetRhinoVersion)
+    Log.Write($"startup  rhino={RhinoApp.Version}  version={version}  plugin={PluginBuildIdentity.Id}  identity={assembly.GetName().Name}  target=rhino{PluginBuildIdentity.TargetRhinoVersion}/{PluginBuildIdentity.TargetFramework}  dll={assembly.Location}");
+    if (RhinoApp.ExeVersion != PluginBuildIdentity.TargetRhinoVersion)
     {
-      errorMessage = $"This vAltGr Shortcut Filter build targets Rhino {TargetRhinoVersion} " +
-        $"({TargetFramework}), but Rhino {RhinoApp.ExeVersion} is running. Install the matching DLL.";
+      errorMessage = $"This vAltGr Shortcut Filter build targets Rhino {PluginBuildIdentity.TargetRhinoVersion} " +
+        $"({PluginBuildIdentity.TargetFramework}), but Rhino {RhinoApp.ExeVersion} is running. Install the matching DLL.";
       Log.Write($"load rejected  {errorMessage}");
       return LoadReturnCode.ErrorShowDialog;
     }

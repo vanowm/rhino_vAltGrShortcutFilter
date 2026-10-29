@@ -11,7 +11,7 @@
     <CopyRetryCount>0</CopyRetryCount>
     <CopyRetryDelayMilliseconds>0</CopyRetryDelayMilliseconds>
     <AutoCommitVersionOnRelease Condition="'$(AutoCommitVersionOnRelease)' == ''">true</AutoCommitVersionOnRelease>
-    <ReleaseDllPath>bin/Release/$(TargetFramework)/$(AssemblyName).dll</ReleaseDllPath>
+    <ReleaseDllPath>bin/Release/Rhino$(RhinoHostMajor)/$(TargetFramework)/$(AssemblyName).dll</ReleaseDllPath>
     <ReleaseDllPaths Condition="'$(ReleaseDllPaths)' == ''">$(ReleaseDllPath)</ReleaseDllPaths>
     <IsReleaseCoordinator Condition="'$(TargetFrameworks)' == '' and '$(TargetFramework)' != ''">true</IsReleaseCoordinator>
     <IsReleaseCoordinator Condition="'$(TargetFrameworks)' != '' and '$(TargetFramework)' == ''">true</IsReleaseCoordinator>
@@ -23,7 +23,7 @@
     <Exec
       ConsoleToMSBuild="true"
       StandardOutputImportance="low"
-      Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$root='$(MSBuildProjectDirectory)'; $files=Get-ChildItem -LiteralPath $root -Recurse -File -Filter '*.cs' | Where-Object { $_.FullName -notmatch '\\(bin|obj|logs|backups|\.git)\\' -and $_.Name -notlike '*.Generated*' }; $latest=$files | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($latest) { $latest.LastWriteTime.ToString('yy.M.d.Hmm') } else { [DateTime]::Now.ToString('yy.M.d.Hmm') }&quot;">
+      Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$root='$(MSBuildProjectDirectory)'; $files=Get-ChildItem -LiteralPath $root -Recurse -File -Filter '*.cs' | Where-Object { $_.FullName -notmatch '\\(bin|obj|logs|backups|\.git)\\' -and $_.Name -notlike '*.Generated*' }; $latest=$files | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($latest) { $latest.LastWriteTime.ToString('yy.M.d.Hmm') } else { [DateTime]::Now.ToString('yy.M.d.Hmm') }&quot; 2&gt;NUL">
       <Output TaskParameter="ConsoleOutput" PropertyName="BuildVersion" />
     </Exec>
 
@@ -67,7 +67,7 @@
   <Target Name="CreateReleaseBackup" AfterTargets="Build" Condition="'$(Configuration)' == 'Release' and '$(TargetFramework)' != ''">
     <PropertyGroup>
       <BackupTimestamp>$([System.DateTime]::Now.ToString('yy.MM.dd.HHmmss'))</BackupTimestamp>
-      <BackupOutputRoot>$(MSBuildProjectDirectory)\bin\Release\backups\$(BackupTimestamp)\$(TargetFramework)</BackupOutputRoot>
+      <BackupOutputRoot>$(MSBuildProjectDirectory)\bin\Release\backups\$(BackupTimestamp)\Rhino$(RhinoHostMajor)\$(TargetFramework)</BackupOutputRoot>
     </PropertyGroup>
 
     <ItemGroup>
